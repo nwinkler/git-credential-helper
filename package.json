@@ -1,0 +1,23 @@
+{
+  "name": "git-credential-helper",
+  "version": "0.0.1",
+  "description": "Node library that allows using the git credential API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nwinkler/git-credential-helper.git"
+  },
+  "keywords": [
+    "git",
+    "credentials"
+  ],
+  "author": "Nils Winkler <nils@nilswinkler.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nwinkler/git-credential-helper/issues"
+  },
+  "homepage": "https://github.com/nwinkler/git-credential-helper"
+}
