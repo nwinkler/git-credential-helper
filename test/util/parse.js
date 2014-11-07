@@ -3,48 +3,56 @@ var expect = require('expect.js');
 describe('parse', function () {
     var parse = require('../../lib/util/parse');
 
-    it('should return an empty object on an empty String', function () {
-        var result = parse('');
+    it('should return an empty object on an empty String', function (done) {
+        parse('', function(err, output) {
+            expect(output).to.eql({});
 
-        expect(result).to.eql({});
+            done();
+        });
     });
 
-    it('should return an object containing the value from the input', function () {
+    it('should return an object containing the value from the input', function (done) {
         var input = 'foo=bar';
 
-        var result = parse(input);
+        parse(input, function(err, output) {
+            expect(output).to.eql({
+                foo: 'bar'
+            });
 
-        expect(result).to.eql({
-            foo: 'bar'
+            done();
         });
     });
 
-    it('should return an object containing the value from the input, including trim', function () {
+    it('should return an object containing the value from the input, including trim', function (done) {
         var input = 'foo = bar';
 
-        var result = parse(input);
+        parse(input, function(err, output) {
+            expect(output).to.eql({
+                foo: 'bar'
+            });
 
-        expect(result).to.eql({
-            foo: 'bar'
+            done();
         });
     });
 
-    it('should return an object containing the values from the input', function () {
+    it('should return an object containing the values from the input', function (done) {
         var input = 'foo=bar\n\
         foo2=bar2\n\
         foo3=bar3\n\
         ';
 
-        var result = parse(input);
+        parse(input, function(err, output) {
+            expect(output).to.eql({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3'
+            });
 
-        expect(result).to.eql({
-            foo: 'bar',
-            foo2: 'bar2',
-            foo3: 'bar3'
+            done();
         });
     });
 
-    it('should filter out empty lines', function () {
+    it('should filter out empty lines', function (done) {
         var input = 'foo=bar\n\
         \n\
         foo2=bar2\n\
@@ -53,13 +61,15 @@ describe('parse', function () {
         foo4=\n\
         ';
 
-        var result = parse(input);
+        parse(input, function(err, output) {
+            expect(output).to.eql({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+                foo4: ''
+            });
 
-        expect(result).to.eql({
-            foo: 'bar',
-            foo2: 'bar2',
-            foo3: 'bar3',
-            foo4: ''
+            done();
         });
     });
 });
