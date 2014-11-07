@@ -43,4 +43,23 @@ describe('parse', function () {
             foo3: 'bar3'
         });
     });
+
+    it('should filter out empty lines', function () {
+        var input = 'foo=bar\n\
+        \n\
+        foo2=bar2\n\
+        foofoo\n\
+        foo3=bar3\n\
+        foo4=\n\
+        ';
+
+        var result = parse(input);
+
+        expect(result).to.eql({
+            foo: 'bar',
+            foo2: 'bar2',
+            foo3: 'bar3',
+            foo4: ''
+        });
+    });
 });
