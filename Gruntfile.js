@@ -13,7 +13,23 @@ module.exports = function (grunt) {
                 'test/**/*.js'
             ]
         },
+        simplemocha: {
+            options: {
+                reporter: 'spec',
+                timeout: '5000'
+            },
+            full: {
+                src: ['test/test.js']
+            },
+            short: {
+                options: {
+                    reporter: 'dot'
+                },
+                src: ['test/test.js']
+            }
+        }
     });
 
-    grunt.registerTask('default', 'jshint');
+    grunt.registerTask('test', ['jshint', 'simplemocha:full']);
+    grunt.registerTask('default', 'test');
 };

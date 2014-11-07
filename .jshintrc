@@ -47,7 +47,7 @@
     "laxbreak": true,
     "laxcomma": false,
     "loopfunc": true,
-    "multistr": false,
+    "multistr": true,
     "onecase": true,
     "regexdash": false,
     "scripturl": false,
