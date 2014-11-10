@@ -1,1 +1,2 @@
 require('./util');
+require('./commands');
