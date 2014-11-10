@@ -1,4 +1,8 @@
 var expect = require('expect.js');
+var mockSpawn = require('mock-spawn');
+
+var mySpawn = mockSpawn();
+require('child_process').spawn = mySpawn;
 
 describe.only('available', function () {
     var available = require('../../lib/commands/available');
