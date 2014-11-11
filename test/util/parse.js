@@ -11,6 +11,22 @@ describe('parse', function () {
         });
     });
 
+    it('should return an empty object on undefined', function (done) {
+        parse(undefined, function(err, output) {
+            expect(output).to.eql({});
+
+            done();
+        });
+    });
+
+    it('should return an empty object on null', function (done) {
+        parse(null, function(err, output) {
+            expect(output).to.eql({});
+
+            done();
+        });
+    });
+
     it('should return an object containing the value from the input', function (done) {
         var input = 'foo=bar';
 
