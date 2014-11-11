@@ -4,7 +4,7 @@ var mockSpawn = require('mock-spawn');
 var mySpawn = mockSpawn();
 require('child_process').spawn = mySpawn;
 
-describe('fill', function () {
+describe.only('fill', function () {
     var fill = require('../../lib/commands/fill');
 
     it('should return nothing when the server does not have any stored credentials', function (done) {
@@ -27,7 +27,7 @@ describe('fill', function () {
         });
     });
 
-    it('should return the record when the server does stored credentials', function (done) {
+    it('should return the record when the server has stored credentials', function (done) {
         mySpawn.sequence.add(mySpawn.simple(0, 'foo=bar\n\
         foo2=bar2\n\
         foo3=bar3\n\
