@@ -1,11 +1,28 @@
 var expect = require('expect.js');
 var mockSpawn = require('mock-spawn');
+var mockery = require('mockery');
 
-var mySpawn = mockSpawn();
-require('child_process').spawn = mySpawn;
+describe('fill', function () {
+    var mySpawn;
+    var libPath = '../../lib/commands/fill';
+    var fill;
 
-describe.only('fill', function () {
-    var fill = require('../../lib/commands/fill');
+    beforeEach(function () {
+        mySpawn = mockSpawn(false);
+        mockery.enable({
+            useCleanCache: true,
+            warnOnUnregistered: false
+        });
+        mockery.registerMock('child_process', { spawn: mySpawn });
+        mockery.registerAllowable(libPath, true);
+        fill = require(libPath);
+    });
+
+    afterEach(function() {
+        mockery.deregisterAll();
+        mockery.resetCache();
+        mockery.disable();
+    });
 
     it('should return nothing when the server does not have any stored credentials', function (done) {
         mySpawn.sequence.add(mySpawn.simple(0, '\n'));

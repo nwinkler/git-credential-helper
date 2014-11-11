@@ -1,11 +1,25 @@
 var expect = require('expect.js');
 var mockSpawn = require('mock-spawn');
-
-var mySpawn = mockSpawn();
-require('child_process').spawn = mySpawn;
+var mockery = require('mockery');
 
 describe('available', function () {
-    var available = require('../../lib/commands/available');
+    var mySpawn;
+    var available;
+    var libPath = '../../lib/commands/available';
+
+    beforeEach(function () {
+        mySpawn = mockSpawn(false);
+        mockery.enable({ useCleanCache: true });
+        mockery.registerMock('child_process', { spawn: mySpawn });
+        mockery.registerAllowable(libPath, true);
+        available = require(libPath);
+    });
+
+    afterEach(function() {
+        mockery.deregisterAll();
+        mockery.resetCache();
+        mockery.disable();
+    });
 
     it('should return false when the helper is not available', function (done) {
         available(function(err, isAvailable) {

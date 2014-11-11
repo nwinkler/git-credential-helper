@@ -1,11 +1,29 @@
 var expect = require('expect.js');
 var mockSpawn = require('mock-spawn');
-
-var mySpawn = mockSpawn();
-require('child_process').spawn = mySpawn;
+var mockery = require('mockery');
 
 describe('executeCredential', function () {
-    var executeCredential = require('../../lib/util/executeCredential');
+    var mySpawn;
+
+    var executeCredential;
+    var libPath = '../../lib/util/executeCredential';
+
+    beforeEach(function () {
+        mySpawn = mockSpawn(false);
+        mockery.enable({
+            useCleanCache: true,
+            warnOnUnregistered: false
+        });
+        mockery.registerMock('child_process', { spawn: mySpawn });
+        mockery.registerAllowable(libPath, true);
+        executeCredential = require(libPath);
+    });
+
+    afterEach(function() {
+        mockery.deregisterAll();
+        mockery.resetCache();
+        mockery.disable();
+    });
 
     it('should call git credential when called', function (done) {
         mySpawn.sequence.add(mySpawn.simple(0, '\n'));
