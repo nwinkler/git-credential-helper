@@ -1,19 +1,24 @@
 var expect = require('expect.js');
-var mockSpawn = require('mock-spawn');
+var sinon = require('sinon');
 var mockery = require('mockery');
 
 describe('fill', function () {
-    var mySpawn;
+    var executeCredential;
+    var repo;
     var libPath = '../../lib/commands/fill';
     var fill;
 
     beforeEach(function () {
-        mySpawn = mockSpawn(false);
+        executeCredential = sinon.stub();
+        repo = sinon.stub();
+
         mockery.enable({
             useCleanCache: true,
             warnOnUnregistered: false
         });
-        mockery.registerMock('child_process', { spawn: mySpawn });
+
+        mockery.registerMock('../util/executeCredential', executeCredential);
+        mockery.registerMock('../util/repo', repo);
         mockery.registerAllowable(libPath, true);
         fill = require(libPath);
     });
@@ -25,39 +30,22 @@ describe('fill', function () {
     });
 
     it('should return nothing when the server does not have any stored credentials', function (done) {
-        mySpawn.sequence.add(mySpawn.simple(0, '\n'));
+        var testServer = { mock: 'foo'};
+        var testTarget = 'http://foo.not.found';
+        executeCredential.yields(null, {});
+        repo.returns(testServer);
 
-        fill('http://foo.not.found', function(err, data) {
+        fill(testTarget, function(err, data) {
             expect(data).to.eql({});
 
             done();
         });
-    });
 
-    it('should return nothing when the git command fails', function (done) {
-        mySpawn.sequence.add(mySpawn.simple(1, null, 'git error'));
+        expect(executeCredential.called).to.be(true);
+        expect(executeCredential.args[0][0]).to.eql(['fill']);
+        expect(executeCredential.args[0][2]).to.eql(testServer);
 
-        fill('http://foo.not.found', function(err, data) {
-            expect(data).to.eql({});
-
-            done();
-        });
-    });
-
-    it('should return the record when the server has stored credentials', function (done) {
-        mySpawn.sequence.add(mySpawn.simple(0, 'foo=bar\n\
-        foo2=bar2\n\
-        foo3=bar3\n\
-        '));
-
-        fill('http://foo.found', function(err, data) {
-            expect(data).to.eql({
-                foo: 'bar',
-                foo2: 'bar2',
-                foo3: 'bar3'
-            });
-
-            done();
-        });
+        expect(repo.called).to.be(true);
+        expect(repo.args[0][0]).to.be(testTarget);
     });
 });
