@@ -3,9 +3,9 @@ var gitCredentialHelper = require('./../lib/index');
 var server = process.argv[2];
 
 if (server) {
-    console.log('Showing credentials for ' + server);
+    console.log('Rejecting credentials for ' + server);
 
-    gitCredentialHelper.fill(server, function (err, data) {
+    gitCredentialHelper.reject(server, function (err, data) {
         if (err) {
             console.error(err);
         }
@@ -13,5 +13,5 @@ if (server) {
     });
 }
 else {
-    console.error('Please provide a URL to retrieve credentials for as a parameter!')
+    console.error('Please provide a URL to reject credentials for as a parameter!');
 }
