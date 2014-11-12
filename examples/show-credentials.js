@@ -1,4 +1,4 @@
-var gitCredentialHelper = require('./lib');
+var gitCredentialHelper = require('./../lib/index');
 
 var server = process.argv[2];
 
