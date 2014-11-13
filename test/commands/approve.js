@@ -50,14 +50,14 @@ describe('approve', function () {
         approve(testTarget, credentials, function(err, data) {
             expect(data).to.eql({});
 
+            expect(executeCredential.called).to.be(true);
+            expect(executeCredential.args[0][0]).to.eql(['approve']);
+            expect(executeCredential.args[0][2]).to.eql(testServerCredentials);
+
+            expect(repo.called).to.be(true);
+            expect(repo.args[0][0]).to.be(testTarget);
+
             done();
         });
-
-        expect(executeCredential.called).to.be(true);
-        expect(executeCredential.args[0][0]).to.eql(['approve']);
-        expect(executeCredential.args[0][2]).to.eql(testServerCredentials);
-
-        expect(repo.called).to.be(true);
-        expect(repo.args[0][0]).to.be(testTarget);
     });
 });
