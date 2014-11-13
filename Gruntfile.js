@@ -46,6 +46,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['jshint', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
-    grunt.registerTask('travis', ['jshint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
+    grunt.registerTask('travis', ['jshint', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');
 };
