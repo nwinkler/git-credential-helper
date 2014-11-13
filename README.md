@@ -1,6 +1,9 @@
 git-credential-helper
 =====================
 
+[![Build Status](https://travis-ci.org/nwinkler/git-credential-helper.svg?branch=master)](https://travis-ci.org/nwinkler/git-credential-helper)
+[![Coverage Status](https://coveralls.io/repos/nwinkler/git-credential-helper/badge.png)](https://coveralls.io/r/nwinkler/git-credential-helper)
+
 **Work in Progress - don't use this yet**
 
 Node library that allows using the [Git credential API](http://git-scm.com/docs/git-credential)
