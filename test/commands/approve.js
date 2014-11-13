@@ -32,15 +32,18 @@ describe('approve', function () {
     it('should return nothing when the tool has accepted the approval', function (done) {
         var testServer = { mock: 'foo'};
         var testTarget = 'http://foo.not.found';
+
         var credentials = {
             username: 'user',
             password: 'pass'
         };
+
         var testServerCredentials = {
             mock: 'foo',
             username: 'user',
             password: 'pass'
         };
+
         executeCredential.yields(null, {});
         repo.returns(testServer);
 
