@@ -47,23 +47,34 @@ describe('executeCredential', function () {
     });
 
     it('should call git credential when called with input data', function (done) {
-        mySpawn.sequence.add(mySpawn.simple(0, '\n'));
-
-        // TODO Verify feed call
-        executeCredential(['bar1', 'bar2'], function(err, data) {
-            expect(err).to.be(null);
-            expect(data).to.eql({});
-
-            var call = mySpawn.calls[0];
-            expect(call.command).to.be('git');
-            expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
-
-            done();
-        }, {
+        var testObject = {
             foo: 'bar',
             foo2: 'bar2',
             foo3: 'bar3',
             foo4: ''
-        });
+        };
+
+        var testFeed = 'foo=bar\n\
+foo2=bar2\n\
+foo3=bar3\n\
+\n';
+
+        mySpawn.sequence.add(mySpawn.simple(0, '\n'));
+        feed.returns(testFeed);
+
+        executeCredential(['bar1', 'bar2'], function(err, data) {
+            expect(err).to.be(null);
+            expect(data).to.eql({});
+
+            // No way to verify the stdin part of the spawn call.
+            var call = mySpawn.calls[0];
+            expect(call.command).to.be('git');
+            expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
+
+            expect(feed.called).to.be(true);
+            expect(feed.args[0][0]).to.be(testObject);
+
+            done();
+        }, testObject);
     });
 });
