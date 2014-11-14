@@ -4,9 +4,15 @@ git-credential-helper
 [![Build Status](https://travis-ci.org/nwinkler/git-credential-helper.svg?branch=master)](https://travis-ci.org/nwinkler/git-credential-helper)
 [![Coverage Status](https://coveralls.io/repos/nwinkler/git-credential-helper/badge.png)](https://coveralls.io/r/nwinkler/git-credential-helper)
 
-**Work in Progress - don't use this yet**
+Node library that allows using the [Git credential API](http://git-scm.com/docs/git-credential).
+The Git credential API allows you to store and retrieve credentials for Git hosts, preventing you from having to enter your username and password every time.
+To use this, you have to set up your local Git client installation to make use of a *credential helper*. 
+Credential helper applications are available for all major operating systems.
 
-Node library that allows using the [Git credential API](http://git-scm.com/docs/git-credential)
+Please refer to the following documentation for installing a local credential helper for your operating system:
+
+* https://confluence.atlassian.com/display/STASH/Permanently+authenticating+with+Git+repositories
+* https://help.github.com/articles/caching-your-github-password-in-git/
 
 ## Installation
 
