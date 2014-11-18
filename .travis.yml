@@ -8,3 +8,7 @@ matrix:
 before_install: npm install -g grunt-cli
 script:
   - grunt travis
+notifications:
+  email:
+    on_success: always
+    on_failure: always

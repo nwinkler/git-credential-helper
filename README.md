@@ -139,7 +139,7 @@ gitCredentialHelper.reject('http://foo/bar.git', function (err, data) {
 
 ## Known Issues
 
-* The `silent` option of the `fill` command currently does not work on Windows using the ??? credential helper.
+* The `silent` option of the `fill` command currently does not work on Windows using the *Winstore* credential helper.
 
 ## License
 Copyright (c) 2014 Nils Winkler. Licensed under the MIT license.
