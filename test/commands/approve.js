@@ -60,4 +60,56 @@ describe('approve', function () {
             done();
         }, credentials);
     });
+
+    it('should optionally pass the username and password if provided', function (done) {
+        var testServer = { mock: 'foo'};
+        var testTarget = 'http://foo.not.found';
+
+        var credentials = {};
+
+        var testServerCredentials = {
+            mock: 'foo'
+        };
+
+        executeCredential.yields(null, {});
+        repo.returns(testServer);
+
+        approve(testTarget, function(err, data) {
+            expect(data).to.eql({});
+
+            expect(executeCredential.called).to.be(true);
+            expect(executeCredential.args[0][0]).to.eql(['approve']);
+            expect(executeCredential.args[0][2]).to.eql(testServerCredentials);
+
+            expect(repo.called).to.be(true);
+            expect(repo.args[0][0]).to.be(testTarget);
+
+            done();
+        }, credentials);
+    });
+
+    it('should not fail when the options are not provided', function (done) {
+        var testServer = { mock: 'foo'};
+        var testTarget = 'http://foo.not.found';
+
+        var testServerCredentials = {
+            mock: 'foo'
+        };
+
+        executeCredential.yields(null, {});
+        repo.returns(testServer);
+
+        approve(testTarget, function(err, data) {
+            expect(data).to.eql({});
+
+            expect(executeCredential.called).to.be(true);
+            expect(executeCredential.args[0][0]).to.eql(['approve']);
+            expect(executeCredential.args[0][2]).to.eql(testServerCredentials);
+
+            expect(repo.called).to.be(true);
+            expect(repo.args[0][0]).to.be(testTarget);
+
+            done();
+        });
+    });
 });
