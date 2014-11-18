@@ -41,9 +41,46 @@ describe('executeCredential', function () {
             var call = mySpawn.calls[0];
             expect(call.command).to.be('git');
             expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
+            expect(call.opts.detached).to.be(false);
 
             done();
         }, '');
+    });
+
+    it('should use the silent option true', function (done) {
+        mySpawn.sequence.add(mySpawn.simple(0, '\n'));
+
+        executeCredential(['bar1', 'bar2'], function(err, data) {
+            expect(err).to.be(null);
+            expect(data).to.eql({});
+
+            var call = mySpawn.calls[0];
+            expect(call.command).to.be('git');
+            expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
+            expect(call.opts.detached).to.be(true);
+
+            done();
+        }, '', {
+            silent: true
+        });
+    });
+
+    it('should use the silent option false', function (done) {
+        mySpawn.sequence.add(mySpawn.simple(0, '\n'));
+
+        executeCredential(['bar1', 'bar2'], function(err, data) {
+            expect(err).to.be(null);
+            expect(data).to.eql({});
+
+            var call = mySpawn.calls[0];
+            expect(call.command).to.be('git');
+            expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
+            expect(call.opts.detached).to.be(false);
+
+            done();
+        }, '', {
+            silent: false
+        });
     });
 
     it('should call git credential when called with input data', function (done) {
