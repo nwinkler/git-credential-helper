@@ -46,17 +46,19 @@ Example:
 
 ```javascript
 gitCredentialHelper.available(function (err, data) {
-    // data will be true or false
-    console.log(data);
+  // data will be true or false
+  console.log(data);
 });
 ```
 
-### fill(target, callback)
+### fill(target, callback, options)
 
 Retrieves any stored credentials for the provided target server. The following parameters are expected:
 
 * `target`: A `String` parameter indicating the URL of the target server.
 * `callback`: Called when the call to the Git credential tool finishes.
+* `options`: Optional `Object` parameter, the following options are available:
+    * `silent`: `Boolean` option, default value `false`. Tries to do a silent check, not asking for credentials if the system does not have a stored set of credentials for the requested target repo. Might not be supported on all platforms.
 
 The provided `callback` is called with two parameters:
 
@@ -80,18 +82,20 @@ Example:
 
 ```javascript
 gitCredentialHelper.fill('http://foo/bar.git', function (err, data) {
-    // data will contain any stored credentials, or will be {}
-    console.log(data);
-});
+  // data will contain any stored credentials, or will be {}
+  console.log(data);
+}, {
+  silent: true
+);
 ```
 
-### approve(target, credentials, callback)
+### approve(target, callback, options)
 
 Stores the provided credentials for the provided target server. The following parameters are expected:
 
 * `target`: A `String` parameter indicating the URL of the target server.
-* `credentials`: An object containing `username` and `password` properties with the credentials to be stored.
 * `callback`: Called when the call to the Git credential tool finishes.
+* `options`: An object containing `username` and `password` properties with the credentials to be stored.
 
 The provided `callback` is called with two parameters:
 
@@ -101,22 +105,23 @@ The provided `callback` is called with two parameters:
 Example:
 
 ```javascript
-gitCredentialHelper.approve('http://foo/bar.git', {
-    username: 'user',
-    password: 'pass'
-  },
+gitCredentialHelper.approve('http://foo/bar.git',
   function (err, data) {
     // data will be {}
     console.log(data);
+}, {
+  username: 'user',
+  password: 'pass'
 });
 ```
 
-### reject(target, callback)
+### reject(target, callback, options)
 
 Removes any stored credentials for the provided target server. The following parameters are expected:
 
 * `target`: A `String` parameter indicating the URL of the target server.
 * `callback`: Called when the call to the Git credential tool finishes.
+* `options`: Optional parameter, there currently aren't any supported options for this command.
 
 The provided `callback` is called with two parameters:
 
@@ -127,10 +132,14 @@ Example:
 
 ```javascript
 gitCredentialHelper.reject('http://foo/bar.git', function (err, data) {
-    // data will be {}
-    console.log(data);
+  // data will be {}
+  console.log(data);
 });
 ```
+
+## Known Issues
+
+* The `silent` option of the `fill` command currently does not work on Windows using the ??? credential helper.
 
 ## License
 Copyright (c) 2014 Nils Winkler. Licensed under the MIT license.

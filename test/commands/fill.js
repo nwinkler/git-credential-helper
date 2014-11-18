@@ -48,4 +48,29 @@ describe('fill', function () {
             done();
         });
     });
+
+    it('should return pass on the options object when provided', function (done) {
+        var testServer = { mock: 'foo'};
+        var testTarget = 'http://foo.not.found';
+        var options = {
+            silent: true
+        };
+
+        executeCredential.yields(null, {});
+        repo.returns(testServer);
+
+        fill(testTarget, function(err, data) {
+            expect(data).to.eql({});
+
+            expect(executeCredential.called).to.be(true);
+            expect(executeCredential.args[0][0]).to.eql(['fill']);
+            expect(executeCredential.args[0][2]).to.eql(testServer);
+            expect(executeCredential.args[0][3]).to.eql(options);
+
+            expect(repo.called).to.be(true);
+            expect(repo.args[0][0]).to.be(testTarget);
+
+            done();
+        }, options);
+    });
 });
