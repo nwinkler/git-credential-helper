@@ -10,6 +10,8 @@ if (server) {
             console.error(err);
         }
         console.log(data);
+    }, {
+        silent: true
     });
 }
 else {

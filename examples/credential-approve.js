@@ -8,14 +8,14 @@ var password = process.argv[4];
 if (server && username && password) {
     console.log('Approving credentials for ' + server);
 
-    gitCredentialHelper.approve(server, {
-        username: username,
-        password: password
-    }, function (err, data) {
+    gitCredentialHelper.approve(server, function (err, data) {
         if (err) {
             console.error(err);
         }
         console.log(data);
+    }, {
+        username: username,
+        password: password
     });
 }
 else {
