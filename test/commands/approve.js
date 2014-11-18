@@ -47,7 +47,7 @@ describe('approve', function () {
         executeCredential.yields(null, {});
         repo.returns(testServer);
 
-        approve(testTarget, credentials, function(err, data) {
+        approve(testTarget, function(err, data) {
             expect(data).to.eql({});
 
             expect(executeCredential.called).to.be(true);
@@ -58,6 +58,6 @@ describe('approve', function () {
             expect(repo.args[0][0]).to.be(testTarget);
 
             done();
-        });
+        }, credentials);
     });
 });
