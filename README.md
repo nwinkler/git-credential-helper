@@ -141,5 +141,11 @@ gitCredentialHelper.reject('http://foo/bar.git', function (err, data) {
 
 * The `silent` option of the `fill` command currently does not work on Windows using the *Winstore* credential helper.
 
+## To Do
+
+* Provide an error message if the credential helper is not installed and someone tries to call `approve`, `fill` or `reject`
+* Implement `silent` option on Windows - research
+* Add grunt-bump to build process.
+
 ## License
 Copyright (c) 2014 Nils Winkler. Licensed under the MIT license.
