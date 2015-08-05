@@ -88,4 +88,24 @@ describe('parse', function () {
             done();
         });
     });
+
+    it('should return the result when no callback is provided', function () {
+        var input = 'foo=bar\n\
+        \n\
+        foo2=bar2\n\
+        foofoo\n\
+        foo3=bar3\n\
+        foo4=\n\
+        ';
+
+        var result = parse(input);
+
+        expect(result.err).to.be(null);
+        expect(result.output).to.eql({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+                foo4: ''
+        });
+    });
 });
