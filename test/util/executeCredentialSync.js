@@ -3,7 +3,7 @@ var sinon = require('sinon');
 
 var mockery = require('mockery');
 
-describe.only('executeCredentialSync', function () {
+describe('executeCredentialSync', function () {
     var feed;
     var spawnSync;
 
