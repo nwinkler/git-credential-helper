@@ -2,10 +2,10 @@ var expect = require('expect.js');
 var sinon = require('sinon');
 var mockery = require('mockery');
 
-describe('fill', function () {
+describe('fillSync', function () {
     var executeCredential;
     var repo;
-    var libPath = '../../lib/commands/fill';
+    var libPath = '../../lib/commands/fillSync';
     var fill;
 
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('fill', function () {
             warnOnUnregistered: false
         });
 
-        mockery.registerMock('../util/executeCredential', executeCredential);
+        mockery.registerMock('../util/executeCredentialSync', executeCredential);
         mockery.registerMock('../util/repo', repo);
         mockery.registerAllowable(libPath, true);
         fill = require(libPath);
@@ -29,48 +29,49 @@ describe('fill', function () {
         mockery.disable();
     });
 
-    it('should return nothing when the server does not have any stored credentials', function (done) {
+    it('should return nothing when the server does not have any stored credentials', function () {
         var testServer = { mock: 'foo'};
         var testTarget = 'http://foo.not.found';
-        executeCredential.yields(null, {});
+        var testResult = {
+            user: 'foo user'
+        };
+        executeCredential.returns(testResult);
         repo.returns(testServer);
 
-        fill(testTarget, function(err, data) {
-            expect(data).to.eql({});
+        var data = fill(testTarget);
 
-            expect(executeCredential.called).to.be(true);
-            expect(executeCredential.args[0][0]).to.eql(['fill']);
-            expect(executeCredential.args[0][2]).to.eql(testServer);
+        expect(data).to.eql(testResult);
 
-            expect(repo.called).to.be(true);
-            expect(repo.args[0][0]).to.be(testTarget);
+        expect(executeCredential.called).to.be(true);
+        expect(executeCredential.args[0][0]).to.eql(['fill']);
+        expect(executeCredential.args[0][1]).to.eql(testServer);
 
-            done();
-        });
+        expect(repo.called).to.be(true);
+        expect(repo.args[0][0]).to.be(testTarget);
     });
 
-    it('should return pass on the options object when provided', function (done) {
+    it('should return pass on the options object when provided', function () {
         var testServer = { mock: 'foo'};
         var testTarget = 'http://foo.not.found';
         var options = {
             silent: true
         };
-
-        executeCredential.yields(null, {});
+        var testResult = {
+            user: 'foo user'
+        };
+        executeCredential.returns(testResult);
         repo.returns(testServer);
 
-        fill(testTarget, function(err, data) {
-            expect(data).to.eql({});
+        var data = fill(testTarget, options);
 
-            expect(executeCredential.called).to.be(true);
-            expect(executeCredential.args[0][0]).to.eql(['fill']);
-            expect(executeCredential.args[0][2]).to.eql(testServer);
-            expect(executeCredential.args[0][3]).to.eql(options);
+        expect(data).to.eql(testResult);
 
-            expect(repo.called).to.be(true);
-            expect(repo.args[0][0]).to.be(testTarget);
+        expect(executeCredential.called).to.be(true);
+        expect(executeCredential.args[0][0]).to.eql(['fill']);
+        expect(executeCredential.args[0][1]).to.eql(testServer);
+        expect(executeCredential.args[0][2]).to.eql(options);
 
-            done();
-        }, options);
+        expect(repo.called).to.be(true);
+        expect(repo.args[0][0]).to.be(testTarget);
     });
 });

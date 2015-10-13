@@ -38,7 +38,7 @@ describe('executeCredentialSync', function () {
         var result = executeCredentialSync(['bar1', 'bar2']);
 
         expect(spawnSync.callCount).to.be(1);
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: process.env });
 
         expect(result).to.eql({
             err: null,
@@ -57,7 +57,7 @@ describe('executeCredentialSync', function () {
 
         expect(spawnSync.callCount).to.be(1);
         // TODO Check the silent option
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: process.env });
 
         expect(result).to.eql({
             err: null,
@@ -76,7 +76,7 @@ describe('executeCredentialSync', function () {
 
         expect(spawnSync.callCount).to.be(1);
         // TODO Check the silent option
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: process.env });
 
         expect(result).to.eql({
             err: null,
@@ -106,7 +106,7 @@ foo3=bar3\n\
         var result = executeCredentialSync(['bar1', 'bar2'], testObject);
 
         expect(spawnSync.callCount).to.be(1);
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: testFeed });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: testFeed, env: process.env });
 
         expect(result).to.eql({
             err: null,
