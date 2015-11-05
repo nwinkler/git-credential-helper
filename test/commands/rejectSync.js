@@ -40,7 +40,7 @@ describe('rejectSync', function () {
         repo.returns(testServer);
 
         var data = reject(testTarget);
-        
+
         expect(data).to.eql(testResult);
 
         expect(executeCredential.called).to.be(true);

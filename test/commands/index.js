@@ -4,6 +4,7 @@ describe('commands', function () {
     require('./fill');
     require('./fillSync');
     require('./approve');
+    require('./approveSync');
     require('./reject');
     require('./rejectSync');
 });
