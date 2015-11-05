@@ -5,4 +5,5 @@ describe('commands', function () {
     require('./fillSync');
     require('./approve');
     require('./reject');
+    require('./rejectSync');
 });
