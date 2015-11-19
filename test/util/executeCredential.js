@@ -7,6 +7,7 @@ var mockery = require('mockery');
 describe('executeCredential', function () {
     var mySpawn;
     var feed;
+    var env;
 
     var executeCredential;
     var libPath = '../../lib/util/executeCredential';
@@ -23,6 +24,9 @@ describe('executeCredential', function () {
         mockery.registerMock('../util/feed', feed);
         mockery.registerAllowable(libPath, true);
         executeCredential = require(libPath);
+
+        env = process.env;
+        delete env.GIT_TERMINAL_PROMPT;
     });
 
     afterEach(function() {
@@ -41,7 +45,7 @@ describe('executeCredential', function () {
             var call = mySpawn.calls[0];
             expect(call.command).to.be('git');
             expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
-            expect(call.opts.detached).to.be(false);
+            expect(call.opts.env.GIT_TERMINAL_PROMPT).to.be(undefined);
 
             done();
         }, '');
@@ -57,7 +61,7 @@ describe('executeCredential', function () {
             var call = mySpawn.calls[0];
             expect(call.command).to.be('git');
             expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
-            expect(call.opts.detached).to.be(true);
+            expect(call.opts.env.GIT_TERMINAL_PROMPT).to.be('0');
 
             done();
         }, '', {
@@ -75,7 +79,7 @@ describe('executeCredential', function () {
             var call = mySpawn.calls[0];
             expect(call.command).to.be('git');
             expect(call.args).to.eql(['credential', 'bar1', 'bar2']);
-            expect(call.opts.detached).to.be(false);
+            expect(call.opts.env.GIT_TERMINAL_PROMPT).to.be(undefined);
 
             done();
         }, '', {
