@@ -2,10 +2,12 @@ var expect = require('expect.js');
 var sinon = require('sinon');
 
 var mockery = require('mockery');
+var _ = require('lodash');
 
 describe('executeCredentialSync', function () {
     var feed;
     var spawnSync;
+    var myEnv;
 
     var executeCredentialSync;
     var libPath = '../../lib/util/executeCredentialSync';
@@ -22,12 +24,16 @@ describe('executeCredentialSync', function () {
         mockery.registerMock('spawn-sync', spawnSync);
         mockery.registerAllowable(libPath, true);
         executeCredentialSync = require(libPath);
+
+        myEnv = _.cloneDeep(process.env);
+        delete myEnv.GIT_TERMINAL_PROMPT;
     });
 
     afterEach(function() {
         mockery.deregisterAll();
         mockery.resetCache();
         mockery.disable();
+        delete process.env.GIT_TERMINAL_PROMPT;
     });
 
     it('should call git credential when called', function () {
@@ -38,7 +44,7 @@ describe('executeCredentialSync', function () {
         var result = executeCredentialSync(['bar1', 'bar2']);
 
         expect(spawnSync.callCount).to.be(1);
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: process.env });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: myEnv });
 
         expect(result).to.eql({
             err: null,
@@ -56,8 +62,8 @@ describe('executeCredentialSync', function () {
         });
 
         expect(spawnSync.callCount).to.be(1);
-        // TODO Check the silent option
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: process.env });
+        myEnv.GIT_TERMINAL_PROMPT = '0';
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: myEnv });
 
         expect(result).to.eql({
             err: null,
@@ -75,8 +81,7 @@ describe('executeCredentialSync', function () {
         });
 
         expect(spawnSync.callCount).to.be(1);
-        // TODO Check the silent option
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: process.env });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: undefined, env: myEnv });
 
         expect(result).to.eql({
             err: null,
@@ -106,7 +111,7 @@ foo3=bar3\n\
         var result = executeCredentialSync(['bar1', 'bar2'], testObject);
 
         expect(spawnSync.callCount).to.be(1);
-        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: testFeed, env: process.env });
+        sinon.assert.calledWith(spawnSync, 'git', ['credential', 'bar1', 'bar2'], { input: testFeed, env: myEnv });
 
         expect(result).to.eql({
             err: null,

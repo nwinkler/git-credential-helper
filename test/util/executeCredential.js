@@ -3,11 +3,12 @@ var mockSpawn = require('mock-spawn');
 var sinon = require('sinon');
 
 var mockery = require('mockery');
+var _ = require('lodash');
 
 describe('executeCredential', function () {
     var mySpawn;
     var feed;
-    var env;
+    var myEnv;
 
     var executeCredential;
     var libPath = '../../lib/util/executeCredential';
@@ -25,14 +26,15 @@ describe('executeCredential', function () {
         mockery.registerAllowable(libPath, true);
         executeCredential = require(libPath);
 
-        env = process.env;
-        delete env.GIT_TERMINAL_PROMPT;
+        myEnv = _.cloneDeep(process.env);
+        delete myEnv.GIT_TERMINAL_PROMPT;
     });
 
     afterEach(function() {
         mockery.deregisterAll();
         mockery.resetCache();
         mockery.disable();
+        delete process.env.GIT_TERMINAL_PROMPT;
     });
 
     it('should call git credential when called', function (done) {
